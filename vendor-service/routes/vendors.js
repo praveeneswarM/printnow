@@ -39,15 +39,47 @@ router.get('/list', async (req, res) => {
 });
 
 router.put('/pricing', auth, async (req, res) => {
-  if (req.user.role !== 'vendor') return res.status(403).json({ message: 'Forbidden' });
-  const vendor = await User.findByIdAndUpdate(req.user.id, { pricing: req.body }, { new: true });
-  res.json(vendor.pricing);
+  try {
+    if (req.user.role !== 'vendor') {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    const vendor = await User.findByIdAndUpdate(
+      req.user.id,
+      { pricing: req.body },
+      { new: true }
+    );
+
+    if (!vendor) {
+      return res.status(404).json({ message: 'Vendor not found' });
+    }
+
+    res.json(vendor.pricing);
+
+  } catch (err) {
+    console.error("Pricing update error:", err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 router.get('/me/pricing', auth, async (req, res) => {
-  if (req.user.role !== 'vendor') return res.status(403).json({ message: 'Forbidden' });
-  const vendor = await User.findById(req.user.id);
-  res.json(vendor.pricing || { bw: 2, color: 5, minOrder: 0 });
+  try {
+    if (req.user.role !== 'vendor') {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    const vendor = await User.findById(req.user.id);
+
+    if (!vendor) {
+      return res.status(404).json({ message: 'Vendor not found' });
+    }
+
+    res.json(vendor.pricing || { bw: 2, color: 5, minOrder: 0 });
+
+  } catch (err) {
+    console.error("Get pricing error:", err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 router.get('/:id', async (req, res) => {
