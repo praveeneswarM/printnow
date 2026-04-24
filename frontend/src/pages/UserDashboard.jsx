@@ -162,7 +162,7 @@ export default function UserDashboard() {
   const historyOrders = orders.filter(o => o.status === 'Delivered');
   const totalSpent = orders.reduce((sum, o) => sum + (o.amount || 0), 0);
 
-  // ===================== PIE CHART =====================
+  // ===================== PIE CHART (UNCHANGED UI, FIXED VALUES SAFETY) =====================
   const statusCount = orders.reduce((acc, o) => {
     acc[o.status] = (acc[o.status] || 0) + 1;
     return acc;
@@ -170,7 +170,7 @@ export default function UserDashboard() {
 
   const pieData = Object.keys(statusCount).map(key => ({
     name: key,
-    value: statusCount[key]
+    value: statusCount[key] || 0
   }));
 
   const COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444'];
@@ -229,7 +229,7 @@ export default function UserDashboard() {
       ) : (
         <div className="space-y-8">
 
-          {/* Summary */}
+          {/* Summary Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <StatCard title="Total Orders" value={orders.length} />
             <StatCard title="Active Jobs" value={activeOrders.length} sub="Currently processing" />
@@ -248,46 +248,54 @@ export default function UserDashboard() {
                   <LineChart data={timelineData}>
                     <XAxis dataKey="date" stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} />
                     <YAxis stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} tickFormatter={v => `₹${v}`} />
-                    <Tooltip />
-                    <Line type="monotone" dataKey="amount" stroke="#3b82f6" strokeWidth={4} />
+                    <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ borderRadius: '1rem', border: 'none', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }} />
+                    <Line type="monotone" dataKey="amount" stroke="#3b82f6" strokeWidth={4} dot={{ r: 4 }} activeDot={{ r: 8 }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
+            {/* PIE CHART (UNCHANGED LOOK) */}
             <div className="card-modern p-6 min-h-[350px] flex flex-col">
-              <h3 className="font-bold text-gray-900 mb-6 text-sm uppercase tracking-widest">
-                Status Distribution
-              </h3>
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie data={pieData} dataKey="value" cx="50%" cy="50%" outerRadius={100}>
-                    {pieData.map((entry, index) => (
-                      <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+              <h3 className="font-bold text-gray-900 mb-6 text-sm uppercase tracking-widest">Status Distribution</h3>
+              <div className="flex-1 w-full flex items-center justify-center">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={pieData} cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={5} dataKey="value">
+                      {pieData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip contentStyle={{ borderRadius: '1rem', border: 'none', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
+              <div className="flex flex-wrap justify-center gap-2 mt-4">
+                {pieData.map((entry, index) => (
+                  <div key={entry.name} className="flex items-center text-xs font-bold text-gray-600 bg-gray-50 px-2 py-1 rounded-md">
+                    <div className="w-2 h-2 rounded-full mr-2" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
+                    {entry.name}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Recent Orders */}
           <div className="card-modern overflow-hidden">
             <div className="p-6 border-b border-gray-100 bg-gray-50/50">
-              <h3 className="font-bold text-gray-900 text-sm uppercase tracking-widest">
-                Recent Orders
-              </h3>
+              <h3 className="font-bold text-gray-900 text-sm uppercase tracking-widest">Recent Orders</h3>
             </div>
+
             <div className="divide-y divide-gray-100">
               {orders.slice(0, 5).map(order => (
-                <div key={order._id} className="p-6 flex justify-between items-center">
+                <div key={order._id} className="p-6 flex flex-col md:flex-row justify-between items-center gap-4">
                   <div>
                     <p className="font-bold text-gray-900">#{order._id.slice(-6)}</p>
-                    <p className="text-sm text-gray-500">
-                      {new Date(order.createdAt).toLocaleDateString()}
-                    </p>
+                    <p className="text-sm text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</p>
                   </div>
+
                   <div className="flex items-center gap-6">
                     <span>{order.status}</span>
                     <span className="font-bold">₹{order.amount}</span>
