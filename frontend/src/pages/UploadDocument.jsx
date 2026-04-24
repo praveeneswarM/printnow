@@ -114,7 +114,7 @@ export default function UploadDocument() {
         <div className="card-modern overflow-hidden bg-gray-100 flex items-center justify-center min-h-[500px] border border-gray-200">
           {uploadedDoc ? (
             <iframe 
-              src={`http://localhost:5002/${uploadedDoc.path}#toolbar=0`} 
+              src={`http://65.1.85.227:5002/${uploadedDoc.path}#toolbar=0`} 
               className="w-full h-full border-none"
               title="PDF Preview"
             />
