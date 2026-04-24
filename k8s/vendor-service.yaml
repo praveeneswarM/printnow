@@ -30,7 +30,7 @@ spec:
       containers:
         - name: vendor-service
           image: praveenx03/printnow-vendor-service:v1.1.0
-          imagePullPolicy: Never
+          imagePullPolicy: Always
           ports:
             - containerPort: 5004
           envFrom:

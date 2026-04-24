@@ -32,7 +32,7 @@ spec:
       containers:
         - name: frontend
           image: praveenx03/frontend:v1.1.0
-          imagePullPolicy: Never
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           resources:

@@ -30,7 +30,7 @@ spec:
       containers:
         - name: document-service
           image: praveenx03/printnow-document-service:v1.1.0
-          imagePullPolicy: Never
+          imagePullPolicy: Always
           ports:
             - containerPort: 5002
           envFrom:

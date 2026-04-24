@@ -30,7 +30,7 @@ spec:
       containers:
         - name: order-service
           image: praveenx03/printnow-order-service:v1.1.0
-          imagePullPolicy: Never
+          imagePullPolicy: Always
           ports:
             - containerPort: 5003
           envFrom:
