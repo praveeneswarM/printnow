@@ -3,10 +3,10 @@ import axios from 'axios';
 // When running in Production (Docker/K8s), Nginx proxies /api directly to the microservices.
 // When running locally, Vite proxies /api.
 const SERVICES = {
-  USER: 'http://localhost:5001/api',
-  DOCUMENT: 'http://localhost:5002/api/documents',
-  ORDER: 'http://localhost:5003/api/orders',
-  VENDOR: 'http://localhost:5004/api/vendors',
+  USER: 'http://65.1.85.227:5001/api',
+  DOCUMENT: 'http://65.1.85.227:5002/api/documents',
+  ORDER: 'http://65.1.85.227:5003/api/orders',
+  VENDOR: 'http://65.1.85.227:5004/api/vendors',
 };
 
 const createApiClient = (baseURL) => {
