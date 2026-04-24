@@ -77,7 +77,12 @@ export default function VendorDashboard() {
   const totalOrders = orders.length;
   const pendingOrders = orders.filter(o => ['Pending Payment', 'Confirmed'].includes(o.status)).length;
   const completedOrders = orders.filter(o => o.status === 'Delivered').length;
-  const totalEarnings = orders.filter(o => o.status === 'Delivered').reduce((sum, o) => sum + o.amount, 0);
+  const totalEarnings = orders.reduce((sum, o) => {
+  if (o.status === 'Delivered') {
+    return sum + Number(o.amount || 0);
+  }
+  return sum;
+}, 0);
 
   // Time-series Data
   const trendData = [...orders].reverse().reduce((acc, o) => {
