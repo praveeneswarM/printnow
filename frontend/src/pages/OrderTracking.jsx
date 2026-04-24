@@ -23,7 +23,7 @@ export default function OrderTracking() {
 
         if (res.data.documentId && !documentUrl) {
           const dRes = await apiDoc.get(`/${res.data.documentId}`);
-          if (dRes.data?.path) setDocumentUrl(`http://document-service:5002/${dRes.data.path}`);
+          if (dRes.data?.path) setDocumentUrl(`/uploads/${dRes.data.path.split('/').pop()}`);
         }
       } catch(e) {}
     };
