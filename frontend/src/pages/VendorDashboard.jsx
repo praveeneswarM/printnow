@@ -296,53 +296,99 @@
 
 
 import { useState, useEffect } from 'react';
-import { apiVendor } from '../api';
+import { apiVendor, apiDoc } from '../api';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-  LineChart, Line, XAxis, YAxis, Tooltip,
-  ResponsiveContainer, PieChart, Pie, Cell,
-  BarChart, Bar, CartesianGrid
+  FiCheck, FiX, FiPrinter, FiSave, FiSettings, FiEye, FiDownload,
+  FiXCircle, FiTrendingUp, FiShoppingBag, FiClock, FiDollarSign
+} from 'react-icons/fi';
+
+import {
+  BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip,
+  ResponsiveContainer, PieChart, Pie, Cell, CartesianGrid
 } from 'recharts';
 
 export default function VendorDashboard() {
   const [orders, setOrders] = useState([]);
+  const [pricing, setPricing] = useState({ bw: 2, color: 5, minOrder: 0 });
+  const [pricingSaving, setPricingSaving] = useState(false);
+  const [pricingSuccess, setPricingSuccess] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const fetchOrders = () => {
+    apiVendor.get('/orders').then(res => {
+      setOrders(res.data);
+      setLoading(false);
+    });
+  };
+
+  const fetchPricing = () => {
+    apiVendor.get('/me/pricing').then(res => setPricing(res.data));
+  };
 
   useEffect(() => {
-    apiVendor.get('/orders').then(res => setOrders(res.data));
+    fetchOrders();
+    fetchPricing();
   }, []);
 
-  // ================= TODAY DATA =================
+  const handlePricingSave = async (e) => {
+    e.preventDefault();
+    setPricingSaving(true);
+    try {
+      await apiVendor.put('/pricing', pricing);
+      setPricingSuccess(true);
+      setTimeout(() => setPricingSuccess(false), 3000);
+    } catch {
+      alert("Failed to save pricing");
+    }
+    setPricingSaving(false);
+  };
+
+  const updateStatus = async (id, status) => {
+    await apiVendor.put(`/orders/${id}/status`, { status });
+    fetchOrders();
+  };
+
+  const handleDocumentAccess = async (docId, action, originalName) => {
+    try {
+      setIsDownloading(true);
+      const res = await apiDoc.get(`/${docId}/download`, { responseType: 'blob' });
+      const url = URL.createObjectURL(new Blob([res.data]));
+
+      if (action === 'preview') setPreviewUrl(url);
+      else {
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = originalName || 'document.pdf';
+        link.click();
+      }
+    } catch {
+      alert("Error downloading file");
+    }
+    setIsDownloading(false);
+  };
+
+  // ================= DATA =================
   const today = new Date().toLocaleDateString();
 
-  const todayOrders = orders.filter(
-    o => new Date(o.createdAt).toLocaleDateString() === today
-  );
+  const todayData = orders
+    .filter(o => new Date(o.createdAt).toLocaleDateString() === today)
+    .map((_, i) => ({ index: i + 1, orders: i + 1 }));
 
-  const todayChart = todayOrders.map((o, i) => ({
-    index: i + 1,
-    orders: i + 1
-  }));
-
-  // ================= GROUPED DATA =================
   const grouped = {};
-
   orders.forEach(o => {
-    const date = new Date(o.createdAt).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric'
-    });
-
-    if (!grouped[date]) {
-      grouped[date] = 0;
-    }
-    grouped[date] += 1;
+    const d = new Date(o.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    grouped[d] = (grouped[d] || 0) + 1;
   });
 
-  const trendData = Object.keys(grouped).map(date => ({
-    date,
-    orders: grouped[date]
+  const trendData = Object.keys(grouped).map(k => ({
+    date: k,
+    orders: grouped[k]
   }));
 
-  // ================= PIE DATA =================
   const statusCount = orders.reduce((acc, o) => {
     acc[o.status] = (acc[o.status] || 0) + 1;
     return acc;
@@ -358,88 +404,101 @@ export default function VendorDashboard() {
   return (
     <div className="max-w-7xl mx-auto space-y-6">
 
-      {/* TOP ROW */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* MODAL */}
+      <AnimatePresence>
+        {previewUrl && (
+          <motion.div className="fixed inset-0 bg-black/70 flex items-center justify-center">
+            <iframe src={previewUrl} className="w-[90%] h-[90%]" />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-        {/* TODAY ORDERS */}
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h3 className="font-bold mb-4">Today's Orders</h3>
+      {loading ? (
+        <div className="p-20 text-center">Loading...</div>
+      ) : (
+        <>
+          {/* CHART SECTION */}
+          <div className="grid lg:grid-cols-2 gap-6">
 
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={todayChart}>
-              <XAxis dataKey="index" />
-              <YAxis allowDecimals={false} />
-              <Tooltip />
-              <Line type="monotone" dataKey="orders" stroke="#3b82f6" strokeWidth={3} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+            {/* LEFT */}
+            <div className="space-y-6">
 
-        {/* PIE CHART */}
-        <div className="bg-white p-6 rounded-2xl shadow flex flex-col">
-          <h3 className="font-bold mb-4">Status Distribution</h3>
+              {/* TODAY */}
+              <div className="bg-white p-6 rounded-2xl shadow">
+                <h3>Today Orders</h3>
+                <ResponsiveContainer width="100%" height={200}>
+                  <LineChart data={todayData}>
+                    <XAxis dataKey="index" />
+                    <YAxis />
+                    <Tooltip />
+                    <Line dataKey="orders" stroke="#3b82f6" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
 
-          <div className="relative flex-1 flex items-center justify-center">
-            <ResponsiveContainer width="100%" height={260}>
-              <PieChart>
-                <Pie
-                  data={pieData}
-                  innerRadius={60}
-                  outerRadius={90}
-                  paddingAngle={4}
-                  cornerRadius={6}
-                  dataKey="value"
-                >
-                  {pieData.map((entry, i) => (
-                    <Cell key={i} fill={COLORS[i % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+              {/* OVER TIME */}
+              <div className="bg-white p-6 rounded-2xl shadow">
+                <h3>Orders Over Time</h3>
+                <ResponsiveContainer width="100%" height={200}>
+                  <LineChart data={trendData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip />
+                    <Line dataKey="orders" stroke="#3b82f6" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
 
-            <div className="absolute text-center">
-              <p className="text-2xl font-bold">{orders.length}</p>
-              <p className="text-xs text-gray-500">Orders</p>
+            {/* RIGHT */}
+            <div className="space-y-6">
+
+              {/* PIE */}
+              <div className="bg-white p-6 rounded-2xl shadow">
+                <h3>Status Distribution</h3>
+                <div className="relative">
+                  <ResponsiveContainer width="100%" height={220}>
+                    <PieChart>
+                      <Pie
+                        data={pieData}
+                        innerRadius={60}
+                        outerRadius={85}
+                        dataKey="value"
+                      >
+                        {pieData.map((e, i) => (
+                          <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2">
+                    {orders.length}
+                  </div>
+                </div>
+              </div>
+
+              {/* BAR */}
+              <div className="bg-white p-6 rounded-2xl shadow">
+                <h3>Orders Per Day</h3>
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={trendData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="orders" fill="#8b5cf6" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* BOTTOM ROW */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-        {/* ORDERS OVER TIME */}
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h3 className="font-bold mb-4">Orders Over Time</h3>
-
-          <ResponsiveContainer width="100%" height={250}>
-            <LineChart data={trendData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis allowDecimals={false} />
-              <Tooltip />
-              <Line type="monotone" dataKey="orders" stroke="#3b82f6" strokeWidth={3} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* BAR CHART */}
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h3 className="font-bold mb-4">Orders Per Day</h3>
-
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={trendData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis allowDecimals={false} />
-              <Tooltip />
-              <Bar dataKey="orders" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
+          {/* KEEP YOUR EXISTING UI BELOW (UNCHANGED) */}
+        </>
+      )}
     </div>
   );
 }
