@@ -45,9 +45,23 @@ router.put('/pricing', auth, async (req, res) => {
 });
 
 router.get('/me/pricing', auth, async (req, res) => {
-  if (req.user.role !== 'vendor') return res.status(403).json({ message: 'Forbidden' });
-  const vendor = await User.findById(req.user.id);
-  res.json(vendor.pricing || { bw: 2, color: 5, minOrder: 0 });
+  try {
+    if (req.user.role !== 'vendor') {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    const vendor = await User.findById(req.user.id || req.user._id);
+
+    if (!vendor) {
+      return res.status(404).json({ message: 'Vendor not found' });
+    }
+
+    res.json(vendor.pricing || { bw: 2, color: 5, minOrder: 0 });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
 });
 
 router.get('/:id', async (req, res) => {
