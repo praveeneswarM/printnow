@@ -1,0 +1,12 @@
+{
+  "name": "printnow",
+  "version": "1.0.0",
+  "description": "PrintNow microservices runner",
+  "scripts": {
+    "start": "concurrently \"npm run start --prefix user-service\" \"npm run start --prefix document-service\" \"npm run start --prefix order-service\" \"npm run start --prefix vendor-service\" \"npm run dev --prefix frontend\"",
+    "install-all": "npm install && npm install --prefix user-service && npm install --prefix document-service && npm install --prefix order-service && npm install --prefix vendor-service && npm install --prefix frontend"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
