@@ -9,7 +9,7 @@ import axios from 'axios';
 //   VENDOR: 'http://vendor-service:5004/api/vendors',
 // };
 const SERVICES = {
-  USER: '/api/auth',
+  USER: '/api',
   DOCUMENT: '/api/documents',
   ORDER: '/api/orders',
   VENDOR: '/api/vendors',
