@@ -7,14 +7,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: order-service
-      app.kubernetes.io/environment: dev
+      app: order-service
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: order-service
-        app.kubernetes.io/part-of: printnow-platform
-        app.kubernetes.io/environment: dev
+        app: order-service
     spec:
       automountServiceAccountToken: false
       containers:
@@ -68,14 +65,11 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app.kubernetes.io/name: order-service
-      app.kubernetes.io/environment: prod
+      app: order-service
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: order-service
-        app.kubernetes.io/part-of: printnow-platform
-        app.kubernetes.io/environment: prod
+        app: order-service
     spec:
       automountServiceAccountToken: false
       containers:
@@ -119,4 +113,5 @@ spec:
       securityContext:
         seccompProfile:
           type: RuntimeDefault
+
 

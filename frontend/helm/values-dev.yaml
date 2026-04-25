@@ -25,3 +25,4 @@ resources:
     cpu: 300m
     memory: 256Mi
 
+

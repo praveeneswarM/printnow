@@ -21,3 +21,4 @@ data:
   MONGO_URI: mongodb://mongodb-0.mongodb.prod.svc.cluster.local:27017/printnow
   ORDERS_COLLECTION: orders
   ORDER_TIMEOUT_MINUTES: "15"
+

@@ -7,14 +7,11 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: vendor-service
-      app.kubernetes.io/environment: {{ .Values.namespace }}
+      app: vendor-service
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: vendor-service
-        app.kubernetes.io/part-of: printnow-platform
-        app.kubernetes.io/environment: {{ .Values.namespace }}
+        app: vendor-service
     spec:
       automountServiceAccountToken: false
       securityContext:
@@ -53,3 +50,4 @@ spec:
             readOnlyRootFilesystem: false
             seccompProfile:
               type: RuntimeDefault
+

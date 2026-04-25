@@ -6,8 +6,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: vendor-service
-    app.kubernetes.io/environment: dev
+    app: vendor-service
   ports:
     - name: http
       port: 5004
@@ -21,9 +20,9 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: vendor-service
-    app.kubernetes.io/environment: prod
+    app: vendor-service
   ports:
     - name: http
       port: 5004
       targetPort: 5004
+

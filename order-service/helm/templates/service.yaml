@@ -6,9 +6,9 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   selector:
-    app.kubernetes.io/name: order-service
-    app.kubernetes.io/environment: {{ .Values.namespace }}
+    app: order-service
   ports:
     - name: http
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
+

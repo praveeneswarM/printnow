@@ -7,14 +7,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: document-service
-      app.kubernetes.io/environment: dev
+      app: document-service
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: document-service
-        app.kubernetes.io/part-of: printnow-platform
-        app.kubernetes.io/environment: dev
+        app: document-service
     spec:
       automountServiceAccountToken: false
       containers:
@@ -68,14 +65,11 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app.kubernetes.io/name: document-service
-      app.kubernetes.io/environment: prod
+      app: document-service
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: document-service
-        app.kubernetes.io/part-of: printnow-platform
-        app.kubernetes.io/environment: prod
+        app: document-service
     spec:
       automountServiceAccountToken: false
       containers:
@@ -119,4 +113,5 @@ spec:
       securityContext:
         seccompProfile:
           type: RuntimeDefault
+
 

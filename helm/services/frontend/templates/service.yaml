@@ -6,9 +6,10 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   selector:
-    app.kubernetes.io/name: frontend
-    app.kubernetes.io/environment: {{ .Values.namespace }}
+    app: frontend
   ports:
     - name: http
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
+      nodePort: {{ .Values.service.nodePort }}
+

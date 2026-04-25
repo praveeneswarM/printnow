@@ -6,8 +6,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: order-service
-    app.kubernetes.io/environment: dev
+    app: order-service
   ports:
     - name: http
       port: 5003
@@ -21,9 +20,9 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: order-service
-    app.kubernetes.io/environment: prod
+    app: order-service
   ports:
     - name: http
       port: 5003
       targetPort: 5003
+

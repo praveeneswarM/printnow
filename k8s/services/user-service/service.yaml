@@ -6,8 +6,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: user-service
-    app.kubernetes.io/environment: dev
+    app: user-service
   ports:
     - name: http
       port: 5001
@@ -21,9 +20,9 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: user-service
-    app.kubernetes.io/environment: prod
+    app: user-service
   ports:
     - name: http
       port: 5001
       targetPort: 5001
+

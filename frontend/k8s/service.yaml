@@ -6,8 +6,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app.kubernetes.io/name: frontend
-    app.kubernetes.io/environment: dev
+    app: frontend
   ports:
     - name: http
       port: 8080
@@ -22,10 +21,10 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app.kubernetes.io/name: frontend
-    app.kubernetes.io/environment: prod
+    app: frontend
   ports:
     - name: http
       port: 8080
       targetPort: 8080
       nodePort: 30080
+

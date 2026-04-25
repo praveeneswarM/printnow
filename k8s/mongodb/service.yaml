@@ -4,15 +4,12 @@ metadata:
   name: mongodb
   namespace: dev
   labels:
-    app.kubernetes.io/name: mongodb
-    app.kubernetes.io/part-of: printnow-platform
-    app.kubernetes.io/environment: dev
+    app: mongodb
 spec:
   clusterIP: None
   publishNotReadyAddresses: true
   selector:
-    app.kubernetes.io/name: mongodb
-    app.kubernetes.io/environment: dev
+    app: mongodb
   ports:
     - name: mongodb
       port: 27017
@@ -24,16 +21,14 @@ metadata:
   name: mongodb
   namespace: prod
   labels:
-    app.kubernetes.io/name: mongodb
-    app.kubernetes.io/part-of: printnow-platform
-    app.kubernetes.io/environment: prod
+    app: mongodb
 spec:
   clusterIP: None
   publishNotReadyAddresses: true
   selector:
-    app.kubernetes.io/name: mongodb
-    app.kubernetes.io/environment: prod
+    app: mongodb
   ports:
     - name: mongodb
       port: 27017
       targetPort: 27017
+

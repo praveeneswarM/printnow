@@ -21,3 +21,4 @@ data:
   MONGO_URI: mongodb://mongodb-0.mongodb.prod.svc.cluster.local:27017/printnow
   USERS_COLLECTION: users
   JWT_EXPIRES_IN: 12h
+

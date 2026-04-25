@@ -6,8 +6,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: document-service
-    app.kubernetes.io/environment: dev
+    app: document-service
   ports:
     - name: http
       port: 5002
@@ -21,9 +20,9 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: document-service
-    app.kubernetes.io/environment: prod
+    app: document-service
   ports:
     - name: http
       port: 5002
       targetPort: 5002
+
