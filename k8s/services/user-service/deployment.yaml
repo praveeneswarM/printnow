@@ -20,7 +20,7 @@ spec:
       containers:
         - name: user-service
           image: praveenx03/printnow-user-service:v1.1.0
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 5001
           envFrom:
