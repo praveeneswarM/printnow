@@ -14,7 +14,7 @@ config:
   VENDOR_REGION: local
   MATCHING_MODE: distance
 secret:
-  JWT_SECRET: dev-vendor-service-jwt-secret-2026
+  JWT_SECRET: dev-printnow-jwt-secret-2026
   RAZORPAY_KEY_ID: rzp_dev_printnow_vendor
   RAZORPAY_SECRET: dev-printnow-vendor-razorpay-secret
 resources:

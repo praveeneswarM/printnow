@@ -14,7 +14,7 @@ config:
   USERS_COLLECTION: users
   JWT_EXPIRES_IN: 1d
 secret:
-  JWT_SECRET: dev-user-service-jwt-secret-2026
+  JWT_SECRET: dev-printnow-jwt-secret-2026
   RAZORPAY_KEY_ID: rzp_dev_printnow_user
   RAZORPAY_SECRET: dev-printnow-user-razorpay-secret
 resources:

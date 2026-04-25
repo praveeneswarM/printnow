@@ -14,7 +14,7 @@ config:
   VENDOR_REGION: national
   MATCHING_MODE: capacity
 secret:
-  JWT_SECRET: prod-vendor-service-jwt-secret-2026
+  JWT_SECRET: prod-printnow-jwt-secret-2026
   RAZORPAY_KEY_ID: rzp_prod_printnow_vendor
   RAZORPAY_SECRET: prod-printnow-vendor-razorpay-secret
 resources:

@@ -15,7 +15,7 @@ config:
   ORDERS_COLLECTION: orders
   ORDER_TIMEOUT_MINUTES: "15"
 secret:
-  JWT_SECRET: prod-order-service-jwt-secret-2026
+  JWT_SECRET: prod-printnow-jwt-secret-2026
   RAZORPAY_KEY_ID: rzp_prod_printnow_order
   RAZORPAY_SECRET: prod-printnow-order-razorpay-secret
 resources:

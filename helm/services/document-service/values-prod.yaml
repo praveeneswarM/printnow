@@ -15,7 +15,7 @@ config:
   UPLOAD_DIR: uploads
   MAX_UPLOAD_MB: "50"
 secret:
-  JWT_SECRET: prod-document-service-jwt-secret-2026
+  JWT_SECRET: prod-printnow-jwt-secret-2026
   RAZORPAY_KEY_ID: rzp_prod_printnow_document
   RAZORPAY_SECRET: prod-printnow-document-razorpay-secret
 resources:
