@@ -58,9 +58,22 @@ router.get('/:id', auth, async (req, res) => {
 router.post('/payment/create-order', auth, async (req, res) => {
   try {
     const { amount } = req.body;
+    const keyId = process.env.RAZORPAY_KEY_ID;
+    const keySecret = process.env.RAZORPAY_SECRET;
+
+    if (!amount || Number(amount) <= 0) {
+      return res.status(400).json({ message: 'Invalid payment amount' });
+    }
+
+    if (!keyId || !keySecret || keyId.includes('printnow') || keySecret.includes('printnow')) {
+      return res.status(503).json({
+        message: 'Razorpay is not configured on the server'
+      });
+    }
+
     const instance = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_mockkey',
-      key_secret: process.env.RAZORPAY_SECRET || 'rzp_test_mocksecret',
+      key_id: keyId,
+      key_secret: keySecret,
     });
 
     const options = {
@@ -72,7 +85,8 @@ router.post('/payment/create-order', auth, async (req, res) => {
     const order = await instance.orders.create(options);
     res.json(order);
   } catch (error) {
-    res.status(500).json({ message: 'Failed to create payment order' });
+    console.error('RAZORPAY CREATE ORDER ERROR:', error);
+    res.status(502).json({ message: 'Failed to create payment order' });
   }
 });
 
