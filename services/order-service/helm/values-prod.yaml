@@ -3,6 +3,7 @@ replicaCount: 2
 image:
   repository: praveenx03/printnow-order-service
   tag: v1.1.0
+  pullPolicy: IfNotPresent
 service:
   type: ClusterIP
   port: 5003

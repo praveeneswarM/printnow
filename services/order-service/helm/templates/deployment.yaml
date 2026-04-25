@@ -23,7 +23,7 @@ spec:
       containers:
         - name: order-service
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 5003
           envFrom:
