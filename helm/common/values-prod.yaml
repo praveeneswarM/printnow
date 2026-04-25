@@ -1,0 +1,18 @@
+targetNamespace: prod
+storageClass:
+  name: duni-sc
+  server: 10.0.1.140
+  share: /var/nfs/general/printnow
+mongodb:
+  image: mongo:7.0.12
+  storage: 20Gi
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: "2"
+      memory: 2Gi
+gateway:
+  className: kgateway
+  listenerPort: 80

@@ -1,0 +1,28 @@
+namespace: prod
+replicaCount: 2
+image:
+  repository: praveenx03/printnow-document-service
+  tag: v1.1.0
+service:
+  type: ClusterIP
+  port: 5002
+  targetPort: 5002
+config:
+  PORT: "5002"
+  NODE_ENV: production
+  MONGO_URI: mongodb://mongodb-0.mongodb.prod.svc.cluster.local:27017/printnow
+  DOCUMENTS_COLLECTION: documents
+  UPLOAD_DIR: uploads
+  MAX_UPLOAD_MB: "50"
+secret:
+  JWT_SECRET: prod-document-service-jwt-secret-2026
+  RAZORPAY_KEY_ID: rzp_prod_printnow_document
+  RAZORPAY_SECRET: prod-printnow-document-razorpay-secret
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: "1"
+    memory: 768Mi
+

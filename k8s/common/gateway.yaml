@@ -1,0 +1,37 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: printnow-gateway
+  namespace: dev
+  labels:
+    app.kubernetes.io/name: printnow
+    app.kubernetes.io/component: gateway
+    app.kubernetes.io/environment: dev
+spec:
+  gatewayClassName: kgateway
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: Same
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: printnow-gateway
+  namespace: prod
+  labels:
+    app.kubernetes.io/name: printnow
+    app.kubernetes.io/component: gateway
+    app.kubernetes.io/environment: prod
+spec:
+  gatewayClassName: kgateway
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: Same

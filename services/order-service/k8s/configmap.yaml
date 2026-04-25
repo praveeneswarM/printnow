@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: order-service-config
+  namespace: dev
+data:
+  PORT: "5003"
+  NODE_ENV: development
+  MONGO_URI: mongodb://mongodb-0.mongodb.dev.svc.cluster.local:27017/printnow
+  ORDERS_COLLECTION: orders
+  ORDER_TIMEOUT_MINUTES: "30"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: order-service-config
+  namespace: prod
+data:
+  PORT: "5003"
+  NODE_ENV: production
+  MONGO_URI: mongodb://mongodb-0.mongodb.prod.svc.cluster.local:27017/printnow
+  ORDERS_COLLECTION: orders
+  ORDER_TIMEOUT_MINUTES: "15"

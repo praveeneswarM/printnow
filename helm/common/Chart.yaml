@@ -1,0 +1,6 @@
+apiVersion: v2
+name: printnow-common
+description: Shared Kubernetes resources for PrintNow
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

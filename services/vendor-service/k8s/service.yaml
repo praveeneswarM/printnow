@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vendor-service
+  namespace: dev
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: vendor-service
+    app.kubernetes.io/environment: dev
+  ports:
+    - name: http
+      port: 5004
+      targetPort: 5004
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vendor-service
+  namespace: prod
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: vendor-service
+    app.kubernetes.io/environment: prod
+  ports:
+    - name: http
+      port: 5004
+      targetPort: 5004

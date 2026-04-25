@@ -1,0 +1,27 @@
+namespace: dev
+replicaCount: 1
+image:
+  repository: praveenx03/printnow-vendor-service
+  tag: v1.1.0
+service:
+  type: ClusterIP
+  port: 5004
+  targetPort: 5004
+config:
+  PORT: "5004"
+  NODE_ENV: development
+  MONGO_URI: mongodb://mongodb-0.mongodb.dev.svc.cluster.local:27017/printnow
+  VENDOR_REGION: local
+  MATCHING_MODE: distance
+secret:
+  JWT_SECRET: dev-vendor-service-jwt-secret-2026
+  RAZORPAY_KEY_ID: rzp_dev_printnow_vendor
+  RAZORPAY_SECRET: dev-printnow-vendor-razorpay-secret
+resources:
+  requests:
+    cpu: 150m
+    memory: 192Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+

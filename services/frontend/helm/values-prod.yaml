@@ -1,0 +1,27 @@
+namespace: prod
+replicaCount: 2
+image:
+  repository: praveenx03/printnow-frontend
+  tag: v1.1.1
+service:
+  type: NodePort
+  port: 8080
+  targetPort: 8080
+  nodePort: 30080
+config:
+  PORT: "8080"
+  NODE_ENV: production
+  API_BASE_PATH: /api
+  DOCUMENT_BASE_PATH: /uploads
+secret:
+  JWT_SECRET: prod-printnow-jwt-secret-2026
+  RAZORPAY_KEY_ID: rzp_prod_printnow_frontend
+  RAZORPAY_SECRET: prod-printnow-frontend-razorpay-secret
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+

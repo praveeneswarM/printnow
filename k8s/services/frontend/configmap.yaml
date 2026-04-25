@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: dev
+data:
+  PORT: "8080"
+  NODE_ENV: development
+  API_BASE_PATH: /api
+  DOCUMENT_BASE_PATH: /uploads
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: prod
+data:
+  PORT: "8080"
+  NODE_ENV: production
+  API_BASE_PATH: /api
+  DOCUMENT_BASE_PATH: /uploads

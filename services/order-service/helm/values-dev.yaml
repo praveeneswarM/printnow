@@ -1,0 +1,27 @@
+namespace: dev
+replicaCount: 1
+image:
+  repository: praveenx03/printnow-order-service
+  tag: v1.1.0
+service:
+  type: ClusterIP
+  port: 5003
+  targetPort: 5003
+config:
+  PORT: "5003"
+  NODE_ENV: development
+  MONGO_URI: mongodb://mongodb-0.mongodb.dev.svc.cluster.local:27017/printnow
+  ORDERS_COLLECTION: orders
+  ORDER_TIMEOUT_MINUTES: "30"
+secret:
+  JWT_SECRET: dev-order-service-jwt-secret-2026
+  RAZORPAY_KEY_ID: rzp_dev_printnow_order
+  RAZORPAY_SECRET: dev-printnow-order-razorpay-secret
+resources:
+  requests:
+    cpu: 150m
+    memory: 192Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
