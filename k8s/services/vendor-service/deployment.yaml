@@ -13,7 +13,6 @@ spec:
       labels:
         app: vendor-service
     spec:
-      automountServiceAccountToken: false
       containers:
         - name: vendor-service
           image: praveenx03/printnow-vendor-service:v1.1.0
@@ -44,17 +43,6 @@ spec:
               port: 5004
             initialDelaySeconds: 20
             periodSeconds: 20
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
-            readOnlyRootFilesystem: false
-            seccompProfile:
-              type: RuntimeDefault
-      securityContext:
-        seccompProfile:
-          type: RuntimeDefault
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -71,7 +59,6 @@ spec:
       labels:
         app: vendor-service
     spec:
-      automountServiceAccountToken: false
       containers:
         - name: vendor-service
           image: praveenx03/printnow-vendor-service:v1.1.0
@@ -102,16 +89,6 @@ spec:
               port: 5004
             initialDelaySeconds: 20
             periodSeconds: 20
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
-            readOnlyRootFilesystem: false
-            seccompProfile:
-              type: RuntimeDefault
-      securityContext:
-        seccompProfile:
-          type: RuntimeDefault
+
 
 

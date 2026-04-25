@@ -8,3 +8,4 @@ data:
   {{ $key }}: {{ $value | quote }}
 {{- end }}
 
+

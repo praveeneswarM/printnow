@@ -13,10 +13,6 @@ spec:
       labels:
         app: user-service
     spec:
-      automountServiceAccountToken: false
-      securityContext:
-        seccompProfile:
-          type: RuntimeDefault
       containers:
         - name: user-service
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -42,12 +38,5 @@ spec:
               port: 5001
             initialDelaySeconds: 20
             periodSeconds: 20
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
-            readOnlyRootFilesystem: false
-            seccompProfile:
-              type: RuntimeDefault
+
 
