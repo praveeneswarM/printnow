@@ -16,8 +16,8 @@ config:
   ORDER_TIMEOUT_MINUTES: "30"
 secret:
   JWT_SECRET: dev-printnow-jwt-secret-2026
-  RAZORPAY_KEY_ID: rzp_dev_printnow_order
-  RAZORPAY_SECRET: dev-printnow-order-razorpay-secret
+  RAZORPAY_KEY_ID: rzp_test_SgxwwTh05ycq20
+  RAZORPAY_SECRET: ib19bXnXUxULKn56i0kv7HsQ
 resources:
   requests:
     cpu: 150m
