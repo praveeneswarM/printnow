@@ -11,6 +11,9 @@ spec:
         - path:
             type: PathPrefix
             value: /api/auth
+        - path:
+            type: PathPrefix
+            value: /api/users
       backendRefs:
         - name: user-service
           port: 5001
@@ -35,6 +38,13 @@ spec:
       backendRefs:
         - name: vendor-service
           port: 5004
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /uploads
+      backendRefs:
+        - name: document-service
+          port: 5002
     - matches:
         - path:
             type: PathPrefix
