@@ -80,7 +80,7 @@ spec:
       spec:
         accessModes:
           - ReadWriteOnce
-        storageClassName: duni-sc
+        storageClassName: printnow-sc
         resources:
           requests:
             storage: 10Gi
@@ -167,7 +167,7 @@ spec:
       spec:
         accessModes:
           - ReadWriteOnce
-        storageClassName: duni-sc
+        storageClassName: printnow-sc
         resources:
           requests:
             storage: 20Gi

@@ -1,6 +1,6 @@
 targetNamespace: dev
 storageClass:
-  name: duni-sc
+  name: printnow-sc
   server: 10.0.1.140
   share: /var/nfs/general/printnow
 mongodb:
